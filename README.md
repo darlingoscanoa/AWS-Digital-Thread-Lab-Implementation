@@ -22,17 +22,23 @@ I successfully deployed this solution, gaining valuable insights into Industry 4
 
 ## Project Insights
 
-![Digital Thread Architecture](image-6.png)
+Digital Thread Architecture
+![image](https://github.com/user-attachments/assets/b45edc2c-2496-4b56-ae5a-764326449bd7)
 
-![Deploy script](image-7.png)
+Deploy script
+![image](https://github.com/user-attachments/assets/17622770-7364-4de5-92dc-11c37de699a4)
 
-![Listing edges and vertices files]](image-8.png)
+Listing the edges and vertices files
+![image](https://github.com/user-attachments/assets/a374e68d-27d2-4d85-9a06-b1c1816f3f2b)
 
-![Visualizing graph network](image-9.png)
+Visualizing the graph network
+![image](https://github.com/user-attachments/assets/041496f8-8435-4e13-9c40-fee341709c2e)
 
-![Query the graph using OpenCypher](image-10.png)
+Query the graph using OpenCypher/Gremlin
+![image](https://github.com/user-attachments/assets/434e8f12-d0f5-476c-8a8b-5b01ed9cfd7a)
 
-![Asking to the LLM some questions about the digital threat](image-11.png)
+Asking to the LLM some questions about the digital threat
+![image](https://github.com/user-attachments/assets/480fc53e-e316-462e-8caf-e90dfc6984b9)
 
 ## LinkedIn Article
 For a more detailed discussion on Industry 4.0 and the implementation of digital threads in manufacturing, please refer to my LinkedIn article:
