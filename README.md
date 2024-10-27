@@ -1,287 +1,46 @@
-# Building Manufacturing Digital Thread Using Graph and Generative AI on AWS
-
-## Table of Contents
-1. [Introduction](#introduction)
-2. [Prerequisites](#prerequisites)
-3. [Deployment](#deployment)
-4. [Data import](#data-import)
-5. [Application User Guide](#application-user-guide)
-6. [Cleaning up](#cleaning-up)
-7. [Architecture Diagram](#architecture-diagram)
-8. [Security](#security)
-9. [AWS Guidance](#aws-guidance)
-10. [Blog](#blog)
-11. [Contributors](#contributors)
-12. [FAQ](#faq)
-13. [License](#license)
-
-
-## Introduction
-
-Manufacturing organizations have vast amounts of knowledge dispersed across the product lifecycle, which can result in limited visibility, knowledge gaps, and the inability to continuously improve. A digital thread offers an integrated approach to combine disparate data sources across enterprise systems to drive traceability, accessibility, collaboration, and agility. 
-
-In this sample project, learn how to create an intelligent manufacturing digital thread using a combination of knowledge graph and generative AI technologies based on data generated throughout the product lifecycle, and their interconnected relationship. Explore use cases and discover actionable steps to start your intelligent digital thread journey using graph and generative AI on AWS.
-
- <img src="docs/mfg-digital-thread-demo.gif" alt="Demo video" width="640" height="auto">
-
-## Prerequisites
+# AWS Digital Thread Lab Implementation
 
-To execute the steps outlined in this post, you will require the following:
+## Overview
+This repository documents my successful deployment and implementation of the AWS Digital Thread lab using graph and generative AI. The original lab is part of the AWS Solutions Library, and this project was undertaken for academic and learning purposes.
 
-* An AWS account – [how to create a new AWS account](https://aws.amazon.com/premiumsupport/knowledge-center/create-and-activate-aws-account/)
-* Access corresponding Foundation Models in Amazon Bedrock - [how to manage model access in Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/model-access.html).
-* Create and configure the local environment
-    * [Configure AWS credentials](https://aws.github.io/copilot-cli/docs/credentials/)
-    * [Install AWS Copilot](https://aws.github.io/copilot-cli/docs/getting-started/install/)
-    * [Install and run Docker](https://www.docker.com/get-started/)
-    * [Install jq](https://jqlang.github.io/jq/download/)
-* Ensure you have enough capacity for the creation of 3 Elastic IP's.
-* The host platform should be linux/x86_64.
+## Original Source
+[AWS Solutions Library - Digital Thread Using Graph and Generative AI](https://github.com/aws-solutions-library-samples/guidance-for-digital-thread-using-graph-and-generative-ai-on-aws)
 
-## Deployment
+## Implementation Experience
+I successfully deployed this solution, gaining valuable insights into Industry 4.0 concepts and their practical application using AWS services. The process involved setting up a digital thread architecture that integrates various data sources and leverages graph databases and generative AI.
 
-1. Clone the repository into your environment
-    ```
-    git clone https://github.com/aws-solutions-library-samples/guidance-for-digital-thread-using-graph-and-generative-ai-on-aws.git
-    cd guidance-for-digital-thread-using-graph-and-generative-ai-on-aws
-    ```
+### Challenges and Solutions
+1. **Understanding Knowledge Graph Concepts**: I had to delve deep into how knowledge graphs populate their databases and create connections, learning about semantics, taxonomy, ontology, and related terms.
+2. **Cost Management**: Keeping AWS service costs under control while implementing a complex solution was a significant challenge.
+3. **Integration Complexity**: Connecting all the components to create an end-to-end application ready for user interaction required careful planning and execution.
 
-2. To deploy this app, run:
+### Key Learnings
+- Gained practical experience with AWS services such as Neptune, Bedrock, and Lambda.
+- Understood the importance of data integration in creating a comprehensive digital thread.
+- Learned about the application of generative AI in manufacturing contexts.
+- Developed skills in implementing graph databases for complex data relationships.
 
-    ```
-    chmod +x deploy-script.sh
-    ./deploy-script.sh
-    ```
+## Project Insights
 
-    > The deploy-script.sh will set up the following resources in your account:
-    > * Amazon Cognito User pool with a demo user account
-    > * Amazon Neptune Serverless cluster
-    > * Amazon Neptune workbench Sagemaker notebook
-    > * A VPC
-    > * Subnets/Security Groups
-    > * Application Load Balancer
-    > * Amazon ECR Repository
-    > * ECS Cluster & Service running on AWS Fargate
+![Digital Thread Architecture](image-6.png)
 
-    In case if you are asked about the AWS credentials as shown below. Please read [Configure AWS credentials](https://aws.github.io/copilot-cli/docs/credentials/).
-    ```
-    Which credentials would you like to use to create demo?  [Use arrows to move, type to filter, ? for more help]
-      > Enter temporary credentials
-        [profile default]
-    ```
+![Deploy script](image-7.png)
 
-3. Visit the URL after AWS Copilot deployment to chat with the digital thread.
-    ```
-    ✔ Deployed service genai-chatbot-app.
-    Recommended follow-up action:
-    - Your service is accessible at http://genai--Publi-xxxxxxx-111111111.xx-xxxx-x.elb.amazonaws.com over the internet.
-    ```
+![Listing edges and vertices files]](image-8.png)
 
-## Data import
+![Visualizing graph network](image-9.png)
 
-Newly deployed Amazon Neptune clusters does not contain any data. To showcase the interaction between Amazon Bedrock Gen AI and Neptune knowledge graph based Digital Thread, please follow the below steps to import the sample data from [src/knowledge-graph/data/](src/knowledge-graph/data) into the graph database.
+![Query the graph using OpenCypher](image-10.png)
 
-1. Run below bash script to create s3 bucket and upload [src/knowledge-graph/data/](src/knowledge-graph/data) files into Amazon S3
-    ```
-    ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output text)
-    S3_BUCKET_NAME="mfg-digitalthread-data-${ACCOUNT_ID}"
-    aws s3 mb "s3://$S3_BUCKET_NAME"
-    aws s3 cp ./src/knowledge-graph/data/ s3://$S3_BUCKET_NAME/sample_data/ --recursive
-    ```
+![Asking to the LLM some questions about the digital threat](image-11.png)
 
-2. Visit **Neptune Workbench** notebook Jupyter notebook.
+## LinkedIn Article
+For a more detailed discussion on Industry 4.0 and the implementation of digital threads in manufacturing, please refer to my LinkedIn article:
 
-    From **AWS Console**:
-    1. Sign in to the AWS Management Console, and open the Amazon Neptune console at https://console.aws.amazon.com/neptune/home
-    2. In the navigation pane on the left, choose Notebooks.
-    3. Select the notebook deployed by the `deploy-script.sh` CloudFormation
-    4. Choose Action -> Open Jupyter 
+[Industry 4.0: Revolutionizing Manufacturing with Digital Threads and AWS](https://www.linkedin.com/pulse/industry-40-revolutionizing-manufacturing-digital-threads-oscanoa-twbme/)
 
-    From URL in **CloudFormation** stack:
-    1. Sign in to the AWS Management Console, and open the AWS CloudFormation console at https://console.aws.amazon.com/cloudformation/
-    2. In the navigation pane on the left, choose Stacks. 
-    3. Select the stack `mfg-dt-neptune`
-    4. In the right pane, select **Outputs** tab
-    5. Find `NeptuneSagemakerNotebook` Key to find the URL of the Neptune Sagemaker Notebook.
-    (e.g. https://aws-neptune-notebook-for-neptunedbcluster-xxxxxxxx.notebook.xx-xxxx-x.sagemaker.aws/)
+## Disclaimer
+This project is for demonstration and learning purposes only. All rights and credits for the original architecture and concept go to AWS Solutions Library. The implementation and insights shared here are based on my personal experience and understanding of the technology.
 
-3. After you go into Jupyter notebook, click on `Upload` button on the right top corner and upload [src/knowledge-graph/mfg-neptune-bulk-import.ipynb](src/knowledge-graph/mfg-neptune-bulk-import.ipynb) file into the Neptune notebook. (PS: click `upload` blue button to confirm uploading)
-
-4. Go into `mfg-neptune-bulk-import.ipynb` and follow the steps inside the notebook to load the sample data into the Neptune database.
-
-5. Successful data import will generate the below knowledge graph.
-
-    <img src="docs/mfg-neptune-schema.png" alt="Graph" width="500" height="auto">
-
-## Application User Guide
-
-1. You will be asked to login with the Cognito user. In this demo, a sample user `demo_user` will be created with the temporary Password `TempPassw0rd!`.  
-    <img src="docs/login_screen.jpg" alt="Login screen" width="300" height="auto">
-
-    Reset Password is required when you login for the first time. Please make sure you follow the password guidelines.
-
-    <img src="docs/reset_pw_screen.jpg" alt="Reset Password screen" width="300" height="auto">
-
-2. The main page will be displayed and you can chat with the digital thread Gen AI and graph application.
-
-    <img src="docs/main_screen.jpg" alt="Main screen" width="500" height="auto">
-
-    Sample questions can be found by expanding the `Example questions` menu.
-
-## Cleaning up
-
-*Attention: All data in Amazon Neptune will be lost after cleaning up.*
-
-Since this demo sets up resources in your account, let's delete them so you don't get charged.
-
-> The cleanup-script.sh will delete the following resources in your account:
-    > * Amazon Cognito User pool with a demo
-    > * Amazon Neptune Serverless cluster
-    > * Amazon Neptune workbrench Sagemaker notebook
-    > * A VPC
-    > * Subnets/Security Groups
-    > * Application Load Balancer
-    > * Amazon ECR Repositories
-    > * ECS Cluster & Service running on AWS Fargate
-
-```
-chmod +x cleanup-script.sh
-./cleanup-script.sh 
-```
-
-Input 'y' to confirm cleanup:
-
-```
-This script is to clean up the Manufacturing Digital thread (Graph and Generative AI) demo application.
-
-Are you sure to delete the demo application? (y/n): y
-
-   Are you sure you want to delete application genai-chatbot-app? [? for help] (y/N) y
-
-
-Finally, You will get a message "CloudFormation is being deleted. It will be removed in minutes. Please check the CloudFormation console https://console.aws.amazon.com/cloudformation/home". 
-
-It will take 10-15 minutes to cleanup the resources in your account.
-```
-
-## Architecture Diagram
-
-![alt text](docs/architecture.png "Architecture Diagram - Manufacturing Digital Thread Using Graph and Generative AI on AWS")
-<details>
-<summary>Detailed description</summary>
-
-1. Identify key stakeholders in the manufacturing organization:
-To embark on a successful journey towards implementing cutting-edge technologies like Generative AI, graphs, and digital thread, it's essential to identify key stakeholders within the manufacturing organization. This includes design engineering, manufacturing engineering, supply chain professionals, operations teams, CXOs, and IT experts. Understanding their distinct business interests and use cases lays the foundation for a connected digital thread.
-2. Identify data sources for building the Digital Thread:
-Determine the fundamental data sources required to build a comprehensive digital thread using graph technologies. These may include Product Lifecycle Management (PLM), Enterprise Resource Planning (ERP), Manufacturing Execution Systems/Manufacturing Operations Management (MES/MOM), Customer Relationship Management (CRM), and other enterprise applications. By identifying these sources and data elements, enterprises can ensure the inclusion of critical data points for a holistic view of their operations. In this sample code, we have provided a few list of objects from PLM, ERP, MES and their interconnected relationships.
-3. Upload Data to S3
-Upload the data to Amazon Simple Storage Service (Amazon S3). This scalable and durable cloud storage solution provides a secure repository for the collected data, setting the stage for further processing and analysis.
-4. Use Bulk Loader to load data into Amazon Neptune database
-Leverage Amazon Neptune Bulk loader capability to load the data stored in Amazon S3 into Amazon Neptune graph database. The necessary schema and relationships are created within Neptune to create a knowledge graph and provides the basis for Gen AI queries.
-5. Create User interface
-Create a front end by combining Streamlit App, Amazon Elastic Container Service (ECS) with Fargate for container orchestration, Amazon Elastic Container Registry (ECR) for managing container images, Elastic Load Balancer (ELB) for efficient traffic distribution, and Amazon Cognito for secure user authentication. This comprehensive setup, orchestrated with AWS Copilot CLI, ensures a scalable, secure, and responsive user interface, facilitating a seamless user experience for stakeholders interacting with the digital thread and linked manufacturing data.
-6. Establish knowledge graph, LLM connection and orchestrate using Langchain.
-7. Establish the linkage between Amazon Bedrock (Claude 3.5 Sonnet), Amazon Neptune and orchestrate the integration seamlessly with Langchain. The orchestrator coordinates the entire process of generating the query from the foundation model, executing the query against the knowledge graph and return the results in natural language to the user. 
-
-</details>
-
-## Security
-
-1. If you need HTTPS connection, please create a new SSL/TLS certificate in AWS Certificate Manager (ACM) and associate with a load balancer. [How to create SSL/TLS Certificate and associate with load balancer](https://repost.aws/knowledge-center/associate-acm-certificate-alb-nlb#)
-2. Use [Web Application Firewall (AWS WAF)](https://aws.amazon.com/waf/) which helps to protect your web applications from common application-layer exploits that can affect availability or consume excessive resources.
-3. Periodic review of your IAM roles/users is recommended to ensure that they grant the minimum privileges required for the function to [apply least-privilege permission](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html#grant-least-privilege). You may also use [IAM Access Analyzer](https://docs.aws.amazon.com/IAM/latest/UserGuide/what-is-access-analyzer.html) to identify unused access.
-4. Always grant the minimum required permissions in Security Groups. [Neptune Security](https://docs.aws.amazon.com/neptune/latest/userguide/get-started-security.html#get-started-security-groups)
-5. Please follow the Security in the cloud section of the shared responsibility model. [Shared Responsibility Model](https://aws.amazon.com/compliance/shared-responsibility-model/)
-
-See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
-
-## AWS Guidance
-For AWS Guidance, please visit [Guidance for Digital Thread Using Graph and Generative AI on AWS](https://aws.amazon.com/solutions/guidance/digital-thread-using-graph-and-generative-ai-on-aws/)
-
-## Blog
-Blog will be released in April 2024.
-
-## Contributors
-
-- Shing Poon, AWS / [Email](mailto:hspoon@amazon.com) / [LinkedIn](https://www.linkedin.com/in/shing-poon-78131336/) 
-- Raja GT, AWS / [Email](mailto:gtraja@amazon.com) / [LinkedIn](https://www.linkedin.com/in/rajagt/)
-
-## FAQ
-
-1. Can i execute the cleanup-script.sh if the neptune cluster is in stopped state?
-
-    No. Cloudformation deletion will fail with the error "Db cluster neptunedbcluster is in stopped state". Please start the neptune cluster either through the aws console or cli command before proceeding with the cleanup.
-
-
-2. What to do when the CloudFormation failed to create neptune cluster with the error "The following resource(s) failed to create: [ElasticIP3, ElasticIP1, ElasticIP2]"? 
-
-    Before running the Neptune Cloudformation template, ensure you have enough capacity for the creation of 3 Elastic IP's. Verify the number of Elastic IP's in the aws console https://console.aws.amazon.com/ec2/home?#Addresses: before deploying the script.  
-
-
-3. Can i create a new user apart from the demo_user?
-
-    Yes. You can navigate to the AWS Cognito user pool and create a new user using the aws console or through cli.
-
-
-4. I got the error "jq: command not found" while running the deploy-script.sh. How to fix?
-
-    Please visit [Install jq](https://jqlang.github.io/jq/download/) page for more information.
-
-5. What do i do if i get a warning 'The requested image's platform (linux/arm64/v8) does not match the detected host platform (linux/amd64) and no specific platform was requested' followed by a failure during copilot deploy?
-
-    This error can be resolved by deploying the script from arm64 based instance. Please see the platform attribute in the manifest.yml file present under copilot/genai-chatbot-app. The platform attribute is set to linux/arm64.
-
-6. Can this solution be adapted for use in other domains, and if so, what is the process?
-
-    Step 1: Identify domain specific customer problem.
-
-    Step 2: Identify relevant stakeholders.
-
-    Step 3: Understand the problem and create questions.
-
-    Step 4: Identify the relevant System and data. 
-
-    Step 5: Create the edges and vertices csv files and place it in the knowledge-graph/data/edges and knowledge-graph/data/vertices folders.
-
-    Step 6: Load the files using S3 loader and run the neptune statistics using src/knowledge-graph/mfg-neptune-bulk-import.ipynb
-
-    Step 7: Chat with the graph.
-
-    Step 8: If the response is inaccurate, please update the prompt template by providing an example query and the corresponding answer.
-
-    When engaging with customers to understand their needs, use the below template.
-
-     <img src="docs/template.png" alt="template" width="500" height="auto">
-
-7. I made minor adjustments in the existing graph by adding new edges and vertices, but the chat application doesn't seem to recognize the changes. What could be the reason for this issue?
-   
-   [Langchain Neptune Graph](https://github.com/langchain-ai/langchain/blob/master/libs/community/langchain_community/graphs/neptune_graph.py) gets the node and edge labels from the Neptune statistics summary. [Neptune statistics](https://docs.aws.amazon.com/neptune/latest/userguide/neptune-dfe-statistics.html) are currently re-generated whenever either more than 10% of data in your graph has changed or when the latest statistics are more than 10 days old. To solve the problem, please run the statistics command "%statistics --mode refresh" immediately after loading any additional changes (Refer mfg-neptune-bulk-import.ipynb). 
-
-8. How do i reset neptune DB?
-
-   Please follow the "Workbench magic commands" outlined in this [blog](https://aws.amazon.com/blogs/database/resetting-your-graph-data-in-amazon-neptune-in-seconds/).
-
-9. What is the procedure for stopping the Neptune cluster and notebook to avoid incurring costs?
-
-   It is a best practice to stop the Neptune cluster and notebook when you are not using it. Follow the steps outlined below.
-
-   <img src="docs/neptune_stop.png" alt="neptune_stop" width="500" height="auto">
-
-   <img src="docs/notebook_stop.png" alt="notebook_stop" width="500" height="auto">
-
-10. How much does Amazon Neptune and Amazon Bedrock cost?
-   
-    Please refer the [Neptune Serverless pricing](https://aws.amazon.com/neptune/pricing/) and [Amazon Bedrock Pricing](https://aws.amazon.com/bedrock/pricing/) for Anthropic models.
-
-11. In which AWS Regions is Amazon Bedrock available?
-
-    Please refer this [page](https://docs.aws.amazon.com/general/latest/gr/bedrock.html) for more details.
-
-12. I need to know more about Amazon Neptune and Amazon Bedrock.
-
-    Please see the [Amazon Bedrock](https://aws.amazon.com/bedrock/) and [Amazon Neptune](https://aws.amazon.com/neptune/) product page for more information.
-
-
-## License
-
-This library is licensed under the MIT-0 License. See the LICENSE file.
+## Acknowledgments
+Special thanks to AWS for providing the comprehensive lab and resources that made this learning experience possible.
